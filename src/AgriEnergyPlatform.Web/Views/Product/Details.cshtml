@@ -1,0 +1,96 @@
+﻿@using AgriEnergyPlatform.Web.Database
+@model Product
+
+@{
+    ViewData["Title"] = "Product Details";
+    var context = ViewData["Context"] as ApplicationDbContext;
+}
+
+<div class="flex flex-col items-center justify-center">
+    <!-- Product Card -->
+    <div class="max-w-full md:max-w-4xl w-full mx-2 my-10 p-5 rounded-lg shadow-lg md:flex-1 md:mr-6">
+        <div class="px-6 py-4">
+            <div class="font-bold text-2xl mb-2">@Model.Name</div>
+            <p class="text-gray-700 text-base mb-4">@Model.Description</p>
+            <div class="text-lg mb-2">Production Date: @Model.ProductionDate.ToString("yyyy-MM-dd")</div>
+            <div class="text-lg mb-2">
+                Quantity:
+                @if (Model.IsWeight)
+                {
+                    @($"{Model.Quantity} KGs")
+                }
+                else
+                {
+                    @Model.Quantity
+                }
+            </div>
+            <div class="text-lg mb-2">Category: @GetProductCategory(Convert.ToInt32(@Model.CategoryProductId), context)</div>
+            <div class="text-lg mb-2">Price: R @Model.Price</div>
+        </div>
+
+        <div class="px-6 py-4">
+            <h3 class="font-bold text-xl mb-4 text-center">Images</h3>
+
+            <!-- Full-size image view -->
+            <div id="fullImageView" class="mb-4 h-64 md:h-96">
+                <img id="fullImage" class="w-full h-full object-contain rounded"
+                     src="@Model.ProductImages?.FirstOrDefault()?.Url"
+                     alt="Selected Product Image">
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Grid -->
+    <div class="max-w-full md:max-w-4xl w-full mx-2 my-10 p-5 rounded-lg shadow-lg md:flex-1 md:mr-6">
+        <h4 class="font-bold text-xl mb-4 text-center"> Select an Image to View</h4>
+        <div class="grid sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+            @foreach (var image in Model.ProductImages!)
+            {
+                <div class="cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                    <img class="w-full rounded" src="@image.Url" alt="Product Image" onclick="displayImage('@image.Url')">
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="max-w-full md:max-w-4xl w-full mx-2 mt-10 md:mt-0 md:ml-6">
+        <div class="px-6 py-4 border rounded-lg shadow-lg">
+            <h3 class="font-bold text-xl mb-4 text-center">Related Products From The Same Farmer</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
+                <!-- Related products cards -->
+                @foreach (var relatedProduct in ViewBag.RelatedProducts)
+                {
+                    <div class="card cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                        <div class="m-3">
+                            <h2 class="text-lg mb-2">@relatedProduct.Name</h2>
+                            <span class="text-sm text-teal-800 font-mono bg-teal-100 inline rounded-full px-2 align-top float-right animate-pulse mt-2 lg:mt-0">@GetProductCategory(@relatedProduct.CategoryProductId, context)</span>
+                            <p class="text-lg mt-4">Price: R @relatedProduct.Price</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions
+{
+    private string? GetProductCategory(int categoryId, ApplicationDbContext? context)
+    {
+        var category = context?.CategoryProducts.FirstOrDefault(p => p.Id == categoryId);
+        if (category != null)
+        {
+            return category.Name;
+        }
+
+        // Default category Name if no match found
+        return " ";
+    }
+}
+
+<script>
+    function displayImage(url) {
+        document.getElementById('fullImage').src = url;
+    }
+</script>

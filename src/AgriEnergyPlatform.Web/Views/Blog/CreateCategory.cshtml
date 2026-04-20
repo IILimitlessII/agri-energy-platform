@@ -1,0 +1,33 @@
+@model CategoryBlog
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<div class="flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">@ViewData["Title"]</h1>
+
+    <form asp-action="CreateCategory" method="post" class="space-y-4">
+        <div class="">
+            <label asp-for="Name" class="block text-gray-700"></label>
+                <input asp-for="Name" class="w-full p-2 border rounded" placeholder="Name Of Category" />
+            <span asp-validation-for="Name" class="text-red-700"></span>
+        </div>
+        <div class="">
+            <label asp-for="Description" class="block text-gray-700 font-bold mb-2"></label>
+                <input asp-for="Description" class="w-full p-2 border rounded" placeholder="Description of Catgory" />
+            <span asp-validation-for="Description" class="text-red-700"></span>
+        </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-700" value="submit">Submit</button>
+            </div>
+    </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

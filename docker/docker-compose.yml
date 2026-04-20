@@ -1,0 +1,97 @@
+# Agri-Energy local stack: SQL Server + web app (local disk uploads, no Firebase keys).
+# Usage: copy docker/.env.example to docker/.env, then: docker compose --env-file docker/.env -f docker/docker-compose.yml up -d --build
+#
+# App: http://localhost:8001
+name: agri-energy-platform
+
+services:
+  agri-energy-platform-db:
+    container_name: agri-energy-platform-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "${SQL_PORT:-8002}:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "${SA_PASSWORD}"
+    networks:
+      - agrienergyconnect
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 3 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/1433' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 25
+      start_period: 45s
+
+  agri-energy-platform-image-sync:
+    container_name: agri-energy-platform-image-sync
+    image: python:3.12-alpine
+    depends_on:
+      agri-energy-platform-db:
+        condition: service_healthy
+    environment:
+      AGRI_IMAGES_SOURCE: "${AGRI_IMAGES_SOURCE:-/assets/firebase_images.zip}"
+      UPLOADS_ROOT: /uploads
+    volumes:
+      - ../:/assets:ro
+      - ./sync-local-images.sh:/sync/sync-local-images.sh:ro
+      - agrienergy_uploads:/uploads
+    command: ["/bin/sh", "/sync/sync-local-images.sh"]
+    restart: "no"
+    networks:
+      - agrienergyconnect
+
+  agri-energy-platform-db-seed:
+    container_name: agri-energy-platform-db-seed
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      agri-energy-platform-db:
+        condition: service_healthy
+      agri-energy-platform-image-sync:
+        condition: service_completed_successfully
+    environment:
+      SA_PASSWORD: "${SA_PASSWORD}"
+      DB_HOST: agri-energy-platform-db
+      DB_PORT: 1433
+      DB_NAME: "${DB_NAME:-AgriEnergyConnect}"
+      AGRI_SQL_SEED_VERSION: "${AGRI_SQL_SEED_VERSION:-2022}"
+    volumes:
+      - ./seed-db.sh:/seed/seed-db.sh:ro
+      - ../docs/Agri-Energy-Platform_2022.sql:/seed/Agri-Energy-Platform_2022.sql:ro
+      - ../docs/Agri-Energy-Platform_2019.sql:/seed/Agri-Energy-Platform_2019.sql:ro
+    command: ["/bin/bash", "/seed/seed-db.sh"]
+    restart: "no"
+    networks:
+      - agrienergyconnect
+
+  agri-energy-platform-web:
+    container_name: agri-energy-platform-web
+    image: ${DOCKER_REGISTRY:-}agri-energy-platform-web
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${APP_PORT:-8001}:8080"
+    depends_on:
+      agri-energy-platform-db:
+        condition: service_healthy
+      agri-energy-platform-db-seed:
+        condition: service_completed_successfully
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      DB_HOST: agri-energy-platform-db
+      DB_NAME: "${DB_NAME:-AgriEnergyConnect}"
+      DB_SA_PASSWORD: "${SA_PASSWORD}"
+      Storage__Provider: Local
+      Database__AutoMigrate: "true"
+      DisableHttpsRedirect: "true"
+    volumes:
+      - agrienergy_uploads:/app/wwwroot/uploads
+    networks:
+      - agrienergyconnect
+
+networks:
+  agrienergyconnect:
+
+volumes:
+  agrienergy_uploads:

@@ -1,0 +1,143 @@
+﻿@model AgriEnergyPlatform.Web.Models.BlogCreateDto
+@{
+    ViewData["Title"] = "Create Blog";
+}
+
+<div class="flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">@ViewData["Title"]</h1>
+
+        <form asp-action="CreateBlog" method="post" enctype="multipart/form-data" class="space-y-4">
+            <div class="">
+                <label>Title</label>
+                <input asp-for="Title" class="w-full p-2 border rounded" placeholder="Title" />
+                <span asp-validation-for="Title" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Blog Image</label>
+                <input asp-for="BlogImage" type="file" class="form-control" />
+                <span asp-validation-for="BlogImage" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Subtitle</label>
+                <input asp-for="Subtitle" class="w-full p-2 border rounded" placeholder="Subtitle" />
+                <span asp-validation-for="Subtitle" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Intro</label>
+                <input asp-for="Intro" class="w-full p-2 border rounded" placeholder="Intro" />
+                <span asp-validation-for="Intro" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 1 Image</label>
+                <input asp-for="Heading1Image" type="file" class="form-control" />
+                <span asp-validation-for="Heading1Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 1</label>
+                <input asp-for="Heading1" class="w-full p-2 border rounded" placeholder="Heading 1" />
+                <span asp-validation-for="Heading1" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Content 1</label>
+                <textarea asp-for="Content1" class="w-full p-2 border rounded"></textarea>
+                <span asp-validation-for="Content1" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 2 Image</label>
+                <input asp-for="Heading2Image" type="file" class="form-control" />
+                <span asp-validation-for="Heading2Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 2</label>
+                <input asp-for="Heading2" class="w-full p-2 border rounded" placeholder="Heading 2" />
+                <span asp-validation-for="Heading2" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Content 2</label>
+                <textarea asp-for="Content2" class="w-full p-2 border rounded"></textarea>
+                <span asp-validation-for="Content2" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 3 Image</label>
+                <input asp-for="Heading3Image" type="file" class="form-control" />
+                <span asp-validation-for="Heading3Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 3</label>
+                <input asp-for="Heading3" class="w-full p-2 border rounded" placeholder="Heading 3" />
+                <span asp-validation-for="Heading3" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Content 3</label>
+                <textarea asp-for="Content3" class="w-full p-2 border rounded"></textarea>
+                <span asp-validation-for="Content3" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 4 Image</label>
+                <input asp-for="Heading4Image" type="file" class="form-control" />
+                <span asp-validation-for="Heading4Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 4</label>
+                <input asp-for="Heading4" class="w-full p-2 border rounded" placeholder="Heading 4" />
+                <span asp-validation-for="Heading4" class="text-red-700"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label>Content 4</label>
+                <textarea asp-for="Content4" class="w-full p-2 border rounded"></textarea>
+                <span asp-validation-for="Content4" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 5 Image</label>
+                <input asp-for="Heading5Image" type="file" class="form-control" />
+                <span asp-validation-for="Heading5Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 5</label>
+                <input asp-for="Heading5" class="w-full p-2 border rounded" placeholder="Heading 5" />
+                <span asp-validation-for="Heading5" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Content 5</label>
+                <textarea asp-for="Content5" class="w-full p-2 border rounded"></textarea>
+                <span asp-validation-for="Content5" class="text-red-700"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.Categories"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

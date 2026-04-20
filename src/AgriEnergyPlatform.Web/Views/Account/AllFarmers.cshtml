@@ -1,0 +1,71 @@
+@model IEnumerable<AgriEnergyPlatform.Web.ViewModels.FarmerViewModel>
+
+@{
+    ViewData["Title"] = "All Farmers";
+    var sortOrder = ViewData["sortOrder"] as string;
+    string nameDescSelected = sortOrder == "name_desc" ? "selected" : "";
+    string nameAscSelected = sortOrder == "name_asc" ? "selected" : "";
+    string productDescSelected = sortOrder == "product_desc" ? "selected" : "";
+    string productAscSelected = sortOrder == "product_asc" ? "selected" : "";
+}
+
+<h1>All Farmers</h1>
+
+<form id="sortForm" asp-action="AllFarmers" method="get">
+    <div>
+        <input type="hidden" name="searchString" value="@ViewBag.CurrentFilter"/>
+        <select id="sortOrder" name="sortOrder">
+            <option value="" selected>Select Sorting</option>
+            <option value="name_desc">Name (Descending)</option>
+            <option value="name_asc">Name (Ascending)</option>
+            <option value="product_desc">Product Count (Descending)</option>
+            <option value="product_asc">Product Count (Ascending)</option>
+        </select>
+    </div>
+</form>
+
+<form asp-action="AllFarmers" method="get">
+    <div>
+        <input type="hidden" name="sortOrder" value="@ViewBag.sortOrder"/>
+        <input type="text" name="searchString" value="@ViewBag.CurrentFilter"/>
+        <input type="submit" value="Search"/>
+        <button type="button" onclick="clearFilters()">Clear</button>
+    </div>
+</form>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:px-6 lg:px-12 xl:pl-28">
+    @foreach (var farmer in Model)
+    {
+        <a href="@Url.Action("ViewProducts", "Product", new { userId = farmer.Id })" class="block">
+            <div class="bg-white shadow-lg p-4">
+                <h2 class="text-xl font-semibold"><i class="fa fa-user-circle" aria-hidden="true"></i> @farmer.Name</h2>
+                <p class="text-gray-600">@farmer.Email</p>
+                <p class="mt-2 text-sm text-gray-500">@farmer.ProductCount Products</p>
+            </div>
+        </a>
+    }
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        var sortOrder = "@ViewData["sortOrder"]";
+        if (sortOrder) {
+            $("#sortOrder").val(sortOrder); // Set the value of the select element
+        }
+
+        $("#sortOrder").change(function() {
+            $("#sortForm").submit(); // Submit the form when the select value changes
+            "@ViewData["sortOrder"] = selectedSortOrder";
+        });
+
+        function clearFilters() {
+            $("#searchForm")[0].reset(); // Reset the search form
+            $("#sortForm")[0].reset(); // Reset the sort form
+        }
+        });
+    function clearFilters() {
+        window.location.href = '@Url.Action("AllFarmers", "Account")';
+    }
+    </script>
+}

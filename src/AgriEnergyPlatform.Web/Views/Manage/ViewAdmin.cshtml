@@ -1,0 +1,33 @@
+﻿@model AgriEnergyPlatform.Web.ViewModels.AdminViewModel
+
+@{
+ViewData["Title"] = "Manage Admins";
+}
+
+<div class="flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">@ViewData["Title"]</h1>
+
+        <table class="min-w-full bg-white border">
+            <thead>
+            <tr>
+                <th class="py-2 px-4 border-b text-left">Username</th>
+                <th class="py-2 px-4 border-b text-left">Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var admin in Model.Admins)
+            {
+            <tr>
+                <td class="py-2 px-4 border-b">@admin.UserName</td>
+                <td class="py-2 px-4 border-b">@admin.Email</td>
+            </tr>
+            }
+            </tbody>
+        </table>
+
+        <div class="text-center mt-4">
+            <a asp-controller="Account" asp-action="AdminRegister" class="bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">Add New Admin</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+# Optional local overrides (Visual Studio / Rider). Default stack: docker-compose.yml.
+# Merge-safe: only adds labels unless you add more keys under services.
+
+services:
+  agri-energy-platform-web:
+    labels:
+      com.agrienergy.compose.optional: "true"

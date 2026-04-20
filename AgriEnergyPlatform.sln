@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgriEnergyPlatform.Web", "src\AgriEnergyPlatform.Web\AgriEnergyPlatform.Web.csproj", "{A5A17E8A-1524-41A2-B2F4-FA30FA8DF9E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgriEnergyPlatform.Application", "src\AgriEnergyPlatform.Application\AgriEnergyPlatform.Application.csproj", "{167A2FA7-85EA-49BE-862D-D49452CE69CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgriEnergyPlatform.Domain", "src\AgriEnergyPlatform.Domain\AgriEnergyPlatform.Domain.csproj", "{1D0290AF-EDC3-46D7-BB2D-C4A22DCC34D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgriEnergyPlatform.Infrastructure", "src\AgriEnergyPlatform.Infrastructure\AgriEnergyPlatform.Infrastructure.csproj", "{9C9678BF-FF6F-4F1D-B6E0-B62D971E9C41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgriEnergyPlatform.Tests", "tests\AgriEnergyPlatform.Tests\AgriEnergyPlatform.Tests.csproj", "{0D33260D-9B82-432D-9B89-3787EC0EA8BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5A17E8A-1524-41A2-B2F4-FA30FA8DF9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A17E8A-1524-41A2-B2F4-FA30FA8DF9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A17E8A-1524-41A2-B2F4-FA30FA8DF9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A17E8A-1524-41A2-B2F4-FA30FA8DF9E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{167A2FA7-85EA-49BE-862D-D49452CE69CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167A2FA7-85EA-49BE-862D-D49452CE69CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167A2FA7-85EA-49BE-862D-D49452CE69CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167A2FA7-85EA-49BE-862D-D49452CE69CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0290AF-EDC3-46D7-BB2D-C4A22DCC34D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0290AF-EDC3-46D7-BB2D-C4A22DCC34D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0290AF-EDC3-46D7-BB2D-C4A22DCC34D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0290AF-EDC3-46D7-BB2D-C4A22DCC34D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C9678BF-FF6F-4F1D-B6E0-B62D971E9C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9678BF-FF6F-4F1D-B6E0-B62D971E9C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9678BF-FF6F-4F1D-B6E0-B62D971E9C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9678BF-FF6F-4F1D-B6E0-B62D971E9C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D33260D-9B82-432D-9B89-3787EC0EA8BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D33260D-9B82-432D-9B89-3787EC0EA8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D33260D-9B82-432D-9B89-3787EC0EA8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D33260D-9B82-432D-9B89-3787EC0EA8BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

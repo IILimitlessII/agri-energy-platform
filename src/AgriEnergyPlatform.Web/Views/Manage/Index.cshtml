@@ -1,0 +1,195 @@
+﻿@model AgriEnergyPlatform.Web.ViewModels.ManageViewModel
+@{
+    int addressCount = 1;
+}
+
+<div class="flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">Manage Account</h1>
+        @if (User.IsInRole("Admin"))
+        {
+            <form asp-controller="Manage" asp-action="ViewAdmin" method="get" class="text-center">
+                <button type="submit" class="bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">Manage Admins</button>
+            </form>
+        }
+        <!-- User Information Section -->
+        <div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">User Information</h3>
+            <div id="user-info-display">
+                <p class="mb-1">
+                    <span class="font-semibold">Name:</span> @Model.User.Name
+                </p>
+                <p class="mb-1">
+                    <span class="font-semibold">Email:</span> @Model.User.Email
+                </p>
+                <button type="button" class="text-blue-500 hover:text-blue-700" onclick="editUserInfo()">Edit</button>
+            </div>
+            <div id="user-info-edit" class="hidden">
+                <p class="mb-1">
+                    <span class="font-semibold">Name:</span> <input type="text" id="edit-user-name" value="@Model.User.Name" class="border rounded p-1">
+                </p>
+                <p class="mb-1">
+                    <span class="font-semibold">Email:</span> <input type="email" id="edit-user-email" value="@Model.User.Email" class="border rounded p-1">
+                </p>
+                <button type="button" class="text-green-500 hover:text-green-700" onclick="saveUserInfo()">Save</button>
+                <button type="button" class="text-red-500 hover:text-red-700" onclick="cancelUserInfoEdit()">Cancel</button>
+            </div>
+            <p class="mb-1">
+                <span class="font-semibold">Products Count:</span><a class="text-blue-500 hover:text-blue-700" asp-controller="Product" asp-action="ViewProducts">@Model.ProductsCount</a>
+            </p>
+            <p class="mb-1">
+                <span class="font-semibold">Blogs Count:</span><a class="text-blue-500 hover:text-blue-700" href="/Blog/Index">@Model.BlogsCount</a>
+            </p>
+        </div>
+
+        <!-- User Addresses Section -->
+        <div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">User Addresses:</h3>
+            @foreach (var address in Model.UserAddresses)
+            {
+                @if (address.Address != null)
+                {
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">Address @addressCount</h4>
+                        <div id="address-display-@addressCount">
+                            <p class="mb-1">
+                                <span class="font-semibold">Address Line 1:</span> @address.Address.AddressLine1
+                            </p>
+                            @if (address.Address.AddressLine2 != null)
+                            {
+                                <p class="mb-1">
+                                    <span class="font-semibold">Address Line 2:</span> @address.Address.AddressLine2
+                                </p>
+                            }
+                            <p class="mb-1">
+                                <span class="font-semibold">Province:</span> @address.Address.Province
+                            </p>
+                            <p class="mb-1">
+                                <span class="font-semibold">City:</span> @address.Address.City
+                            </p>
+                            <p class="mb-1">
+                                <span class="font-semibold">Zip Code:</span> @address.Address.ZipCode
+                            </p>
+                            <button type="button" class="text-blue-500 hover:text-blue-700" onclick="editAddress(@addressCount)">Edit</button>
+                        </div>
+                        <div id="address-edit-@addressCount" class="hidden">
+                            <p class="mb-1">
+                                <span class="font-semibold">Address Line 1:</span> <input type="text" id="edit-address-line1-@addressCount" value="@address.Address.AddressLine1" class="border rounded p-1">
+                            </p>
+                            <p class="mb-1">
+                                <span class="font-semibold">Address Line 2:</span> <input type="text" id="edit-address-line2-@addressCount" value="@address.Address.AddressLine2" class="border rounded p-1">
+                            </p>
+                            <p class="mb-1">
+                                <span class="font-semibold">Province:</span> <input type="text" id="edit-province-@addressCount" value="@address.Address.Province" class="border rounded p-1">
+                            </p>
+                            <p class="mb-1">
+                                <span class="font-semibold">City:</span> <input type="text" id="edit-city-@addressCount" value="@address.Address.City" class="border rounded p-1">
+                            </p>
+                            <p class="mb-1">
+                                <span class="font-semibold">Zip Code:</span> <input type="text" id="edit-zipcode-@addressCount" value="@address.Address.ZipCode" class="border rounded p-1">
+                            </p>
+                            <button type="button" class="text-green-500 hover:text-green-700" onclick="saveAddress(@addressCount)">Save</button>
+                            <button type="button" class="text-red-500 hover:text-red-700" onclick="cancelAddressEdit(@addressCount)">Cancel</button>
+                        </div>
+                    </div>
+                    addressCount++;
+                }
+            }
+        </div>
+
+        <div class="mb-6 text-center">
+            <a class="text-blue-500 hover:text-blue-700" asp-controller="Manage" asp-action="ChangePassword">Change Password</a>
+        </div>
+
+        <form asp-controller="Manage" asp-action="DeleteProfile" method="post" class="text-center">
+            <button type="submit" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="return confirm('Are you sure you want to delete your profile?')">Delete Profile</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    function editUserInfo() {
+        document.getElementById('user-info-display').classList.add('hidden');
+        document.getElementById('user-info-edit').classList.remove('hidden');
+    }
+
+    function cancelUserInfoEdit() {
+        document.getElementById('user-info-display').classList.remove('hidden');
+        document.getElementById('user-info-edit').classList.add('hidden');
+    }
+
+    function saveUserInfo() {
+        const userName = document.getElementById('edit-user-name').value;
+        const userEmail = document.getElementById('edit-user-email').value;
+        const data = {
+            Name: userName,
+            Email: userEmail
+        };
+        fetch('@Url.Action("UpdateUser", "Manage")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save user information');
+                }
+                // Toggle back to display mode
+                document.getElementById('user-info-display').classList.remove('hidden');
+                document.getElementById('user-info-edit').classList.add('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error here
+            });
+    }
+
+    function editAddress(count) {
+        document.getElementById('address-display-' + count).classList.add('hidden');
+        document.getElementById('address-edit-' + count).classList.remove('hidden');
+    }
+
+    function cancelAddressEdit(count) {
+        document.getElementById('address-display-' + count).classList.remove('hidden');
+        document.getElementById('address-edit-' + count).classList.add('hidden');
+    }
+
+    function saveAddress(count) {
+        const addressLine1 = document.getElementById('edit-address-line1-' + count).value;
+        const addressLine2 = document.getElementById('edit-address-line2-' + count).value;
+        const province = document.getElementById('edit-province-' + count).value;
+        const city = document.getElementById('edit-city-' + count).value;
+        const zipCode = document.getElementById('edit-zipcode-' + count).value;
+        const data = {
+            AddressId: count, // Assuming the addressId corresponds to the index
+            AddressLine1: addressLine1,
+            AddressLine2: addressLine2,
+            Province: province,
+            City: city,
+            ZipCode: zipCode
+        };
+        fetch('@Url.Action("UpdateAddress", "Manage")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save address');
+                }
+                // Toggle back to display mode
+                document.getElementById('address-display-' + count).classList.remove('hidden');
+                document.getElementById('address-edit-' + count).classList.add('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error here
+            });
+    }
+</script>
+}

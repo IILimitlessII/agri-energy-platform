@@ -1,0 +1,98 @@
+﻿@model AgriEnergyPlatform.Web.ViewModels.EmployeeRegisterViewModel
+
+@{
+ViewData["Title"] = "Employee Register";
+}
+
+<div class="flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">@ViewData["Title"]</h1>
+        <form method="post" asp-controller="Account" asp-action="EmployeeRegister" class="space-y-4">
+            <div class="">
+                <label><i class="fa fa-user" style="color: #606468;"></i> Username</label>
+                <input asp-for="Username" class="w-full p-2 border rounded" placeholder="Username" required>
+                <span asp-validation-for="Username" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label class="block text-gray-700"><i class="fa fa-envelope" style="color: #606468;"></i> Email</label>
+                <input asp-for="Email" class="w-full p-2 border rounded" placeholder="Email" required>
+                <span asp-validation-for="Email" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label class="block text-gray-700"><i class="fa fa-envelope" style="color: #606468;"></i> Name</label>
+                <input asp-for="Name" class="w-full p-2 border rounded" placeholder="Name" required>
+                <span asp-validation-for="Name" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label class="block text-gray-700"><i class="fa fa-envelope" style="color: #606468;"></i> Password</label>
+                <input asp-for="Password" class="w-full p-2 border rounded" placeholder="Password" type="password" required>
+                <span asp-validation-for="Password" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label class="block text-gray-700"><i class="fa fa-envelope" style="color: #606468;"></i> Confirm Password</label>
+                <input asp-for="ConfirmPassword" class="w-full p-2 border rounded" placeholder="Confirm Password" type="password" required>
+                <span asp-validation-for="ConfirmPassword" class="text-red-700"></span>
+            </div>
+            <div class="text-center">
+                <label>Should have Blogger Claim?</label>
+                <div>
+                    <input asp-for="IsBlogger" id="yes" value="true">
+                    <label for="yes">Yes</label>
+                    <input asp-for="IsBlogger" id="no" value="false" checked>
+                    <label for="no">No</label>
+                </div>
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Address Line 1</label>
+                <input asp-for="AddressLine1" class="w-full p-2 border rounded" placeholder="Address Line 1" required>
+                <span asp-validation-for="AddressLine1" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Address Line 2</label>
+                <input asp-for="AddressLine2" class="w-full p-2 border rounded" placeholder="Address Line 2">
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> City</label>
+                <input asp-for="City" class="w-full p-2 border rounded" placeholder="City" required>
+                <span asp-validation-for="City" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Province</label>
+                <input asp-for="Province" class="w-full p-2 border rounded" placeholder="Province" required>
+                <span asp-validation-for="Province" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Zip Code</label>
+                <input asp-for="ZipCode" class="w-full p-2 border rounded" placeholder="Zip Code" required>
+                <span asp-validation-for="ZipCode" class="text-red-700"></span>
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Address Line 1 (Optional)</label>
+                <input asp-for="OptionalAddressLine1" class="w-full p-2 border rounded" placeholder="Address Line 1 (Optional)">
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Address Line 2 (Optional)</label>
+                <input asp-for="OptionalAddressLine2" class="w-full p-2 border rounded" placeholder="Address Line 2 (Optional)">
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> City (Optional)</label>
+                <input asp-for="OptionalCity" class="w-full p-2 border rounded" placeholder="City (Optional)">
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Province (Optional)</label>
+                <input asp-for="OptionalProvince" class="w-full p-2 border rounded" placeholder="Province (Optional)">
+            </div>
+            <div class="">
+                <label><i class="fa fa-home" style="color: #606468;"></i> Zip Code (Optional)</label>
+                <input asp-for="OptionalZipCode" class="w-full p-2 border rounded" placeholder="Zip Code (Optional)">
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

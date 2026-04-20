@@ -1,0 +1,142 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AgriEnergyPlatform.Web.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Create Product";
+    var categories = ViewData["Categories"] as IEnumerable<CategoryProduct> ?? System.Array.Empty<CategoryProduct>();
+}
+
+<div class="flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">@ViewData["Title"]</h1>
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data" class="space-y-4" onsubmit="setCategoryId()">
+            <div class="mb-4">
+                <label asp-for="Name" class="block text-gray-700 font-bold mb-2"></label>
+                <input asp-for="Name" class="form-input w-full" placeholder="Name of product"/>
+                <span asp-validation-for="Name" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Description" class="block text-gray-700 font-bold mb-2"></label>
+                <textarea asp-for="Description" class="form-textarea w-full"></textarea>
+                <span asp-validation-for="Description" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Production Date</label>
+                <input asp-for="ProductionDate" class="form-input w-full" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")"/>
+                <span asp-validation-for="ProductionDate" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Quantity" class="block text-gray-700 font-bold mb-2"></label>
+                <input asp-for="Quantity" class="form-input w-full" />
+                <span asp-validation-for="Quantity" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Is the Product Quantity a Weight (KG)</label>
+                <div class="inline-block">
+                    <input asp-for="IsWeight" id="yes" value="true" type="radio" class="form-radio" />
+                    <label for="yes" class="mr-2">Yes</label>
+                    <input asp-for="IsWeight" id="no" value="false" type="radio" class="form-radio" />
+                    <label for="no">No</label>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Price" class="block text-gray-700 font-bold mb-2"></label>
+                <input asp-for="Price" class="form-input w-full" oninput="formatPrice(event)" placeholder="0.0 Use '.' as separator"/>
+                <span asp-validation-for="Price" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Create New Category?</label>
+                <div class="inline-block">
+                    <input id="createCategoryYes" name="createCategory" value="true" type="radio" class="form-radio">
+                    <label for="createCategoryYes" class="mr-2">Yes</label>
+                    <input id="createCategoryNo" name="createCategory" value="false" type="radio" class="form-radio" checked>
+                    <label for="createCategoryNo">No</label>
+                </div>
+            </div>
+
+            <div id="categorySelection" class="mb-4">
+                <label asp-for="CategoryProductId" class="block text-gray-700 font-bold mb-2">Select Category</label>
+                <div>
+                    <select asp-for="CategoryProductId" class="form-select w-full">
+                        <option value="">-- Select Category --</option>
+                        @foreach (var category in categories)
+                        {
+                        <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <span asp-validation-for="CategoryProductId" class="text-red-500"></span>
+            </div>
+
+            <div id="newCategoryInput" class="hidden mb-4">
+                <label class="block text-gray-700 font-bold mb-2">New Category Name</label>
+                <input id="newCategoryName" name="newCategoryName" class="form-input w-full" />
+                <span class="text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Images" class="block text-gray-700 font-bold mb-2">Upload Images</label>
+                <input asp-for="Images" class="form-input w-full" type="file" multiple />
+                <span asp-validation-for="Images" class="text-red-500"></span>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var createCategoryYes = document.getElementById("createCategoryYes");
+            var createCategoryNo = document.getElementById("createCategoryNo");
+            var categorySelection = document.getElementById("categorySelection");
+            var newCategoryInput = document.getElementById("newCategoryInput");
+
+            createCategoryYes.addEventListener("change", function () {
+                if (createCategoryYes.checked) {
+                    categorySelection.style.display = "none";
+                    newCategoryInput.classList.remove("hidden");
+                }
+            });
+
+            createCategoryNo.addEventListener("change", function () {
+                if (createCategoryNo.checked) {
+                    categorySelection.style.display = "block";
+                    newCategoryInput.classList.add("hidden");
+                }
+            });
+        });
+
+        function formatPrice(event) {
+            var priceInput = event.target;
+            priceInput.value = priceInput.value.replace(/\,/g, ".");
+        }
+
+        function setCategoryId() {
+            var createCategoryYes = document.getElementById("createCategoryYes");
+            var categoryIdInput = document.getElementById("CategoryProductId");
+            if (createCategoryYes.checked) {
+                var newCategoryNameInput = document.getElementById("newCategoryName");
+                categoryIdInput.value = "1"; // Clear the existing value
+                if (newCategoryNameInput.value.trim() === "") {
+                    // Prevent form submission if new category name is empty
+                    event.preventDefault();
+                    alert("Please enter a new category name.");
+                }
+            } else {
+                var selectedCategoryOption = document.querySelector("#categorySelection select option:checked");
+                if (!selectedCategoryOption || selectedCategoryOption.value === "-- Select Category --") {
+                    // Prevent form submission if no category is selected
+                    event.preventDefault();
+                    alert("Please select a category.");
+                } else {
+                    categoryIdInput.value = selectedCategoryOption.value;
+                }
+            }
+        }
+    </script>
+<partial name="_ValidationScriptsPartial" />
+}
